@@ -5,6 +5,8 @@ import { mealsRouter } from "./routes/meals";
 import { menuRouter } from "./routes/menu";
 import { bffRouter } from "./routes/bff";
 import { graphqlRouter } from "./routes/graphql";
+import { aiRouter } from "./routes/ai";
+import { usersRouter } from "./routes/users";
 
 const app = express();
 const PORT = process.env.PORT ?? 3001;
@@ -17,6 +19,8 @@ app.use("/meals", mealsRouter);
 app.use("/menu", menuRouter);
 app.use("/bff", bffRouter);
 app.use("/graphql", graphqlRouter);
+app.use("/ai", aiRouter);
+app.use("/users", usersRouter);
 
 app.get("/health", (_req, res) => {
   res.json({ status: "ok", timestamp: new Date().toISOString() });
