@@ -1,0 +1,48 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Chef {
+  id    Int    @id @default(autoincrement())
+  name  String
+  bio   String
+  meals Meal[]
+}
+
+model Meal {
+  id          Int          @id @default(autoincrement())
+  name        String
+  description String
+  price       Float
+  imageUrl    String
+  chefId      Int
+  chef        Chef         @relation(fields: [chefId], references: [id])
+  tags        MealTag[]
+  menuItems   WeeklyMenu[]
+}
+
+model MealTag {
+  id     Int    @id @default(autoincrement())
+  label  String
+  mealId Int
+  meal   Meal   @relation(fields: [mealId], references: [id])
+}
+
+model WeeklyMenu {
+  id        Int      @id @default(autoincrement())
+  weekStart DateTime
+  mealId    Int
+  meal      Meal     @relation(fields: [mealId], references: [id])
+}
+
+model User {
+  id           Int    @id @default(autoincrement())
+  email        String @unique
+  passwordHash String
+  name         String
+}
