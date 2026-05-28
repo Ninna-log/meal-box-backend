@@ -24,6 +24,8 @@ model Meal {
   chef        Chef         @relation(fields: [chefId], references: [id])
   tags        MealTag[]
   menuItems   WeeklyMenu[]
+
+  @@index([chefId])
 }
 
 model MealTag {
@@ -31,6 +33,8 @@ model MealTag {
   label  String
   mealId Int
   meal   Meal   @relation(fields: [mealId], references: [id])
+
+  @@index([mealId])
 }
 
 model WeeklyMenu {
@@ -38,6 +42,9 @@ model WeeklyMenu {
   weekStart DateTime
   mealId    Int
   meal      Meal     @relation(fields: [mealId], references: [id])
+
+  @@index([weekStart])
+  @@index([mealId])
 }
 
 model User {

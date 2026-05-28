@@ -1,5 +1,6 @@
 import { anthropic, MODEL } from "../ai/anthropic";
 import { getMealById } from "./meals.service";
+import { AppError } from "../errors/AppError";
 
 export async function recommendMeals(preferences: string): Promise<string> {
   const message = await anthropic.messages.create({
@@ -24,7 +25,7 @@ User preferences: ${preferences}`,
 
 export async function describeMeal(mealId: number): Promise<string> {
   const meal = await getMealById(mealId);
-  if (!meal) throw new Error("Meal not found");
+  if (!meal) throw new AppError(404, "Meal not found");
 
   const message = await anthropic.messages.create({
     model: MODEL,

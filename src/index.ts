@@ -1,5 +1,6 @@
 import "dotenv/config";
 import express, { NextFunction, Request, Response } from "express";
+import { AppError } from "./errors/AppError";
 import cors from "cors";
 import { mealsRouter } from "./routes/meals";
 import { menuRouter } from "./routes/menu";
@@ -29,8 +30,12 @@ app.get("/health", (_req, res) => {
 // ── Global error handler ─────────────────────────────────
 // Express 5 forwards async rejections here automatically.
 app.use((err: Error, _req: Request, res: Response, _next: NextFunction) => {
+  if (err instanceof AppError) {
+    res.status(err.statusCode).json({ error: err.message });
+    return;
+  }
   console.error(err.stack);
-  res.status(500).json({ error: "Internal server error", message: err.message });
+  res.status(500).json({ error: "Internal server error" });
 });
 
 app.listen(PORT, () => {
